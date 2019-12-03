@@ -5,7 +5,7 @@ var request = require("request");
  * @param {string} token 
  * @link https://github.com/InsightAppDev/node-qiwi-api
  */
-function Qiwi(token) {
+function Qiwi(token,proxy_url) {
     this.recipients = {
         qiwi: 99,
         visa_rus: 1963,
@@ -18,6 +18,12 @@ function Qiwi(token) {
         promsvyaz: 821,
         russkiy_standard: 815
     }
+    if(proxy_url){
+        this.rq = request.defaults({'proxy': proxy_url});
+    }else {
+        this.rq = request;
+    }
+
     this.token = token;
     this.headers = {
         'Accept': 'application/json',
@@ -43,7 +49,7 @@ function Qiwi(token) {
             json: true
         };
 
-        request.get(options, (error, response, body) => {
+        this.rq.get(options, (error, response, body) => {
             callback(error, body);
         });
     }
@@ -59,7 +65,7 @@ function Qiwi(token) {
             json: true
         };
 
-        request.get(options, (error, response, body) => {
+        this.rq.get(options, (error, response, body) => {
             callback(error, body);
         });
     }
@@ -86,7 +92,7 @@ function Qiwi(token) {
                 json: true
             };
 
-            request.get(options, (error, response, body) => {
+            this.rq.get(options, (error, response, body) => {
                 callback(error, body);
             });
         });
@@ -111,7 +117,7 @@ function Qiwi(token) {
                 json: true
             };
 
-            request.get(options, (error, response, body) => {
+            this.rq.get(options, (error, response, body) => {
                 callback(error, body);
             });
         });
@@ -145,7 +151,7 @@ function Qiwi(token) {
             json: true
         };
 
-        request.post(options, (error, response, body) => {
+        this.rq.post(options, (error, response, body) => {
             callback(error, body);
         });
     }
@@ -156,7 +162,7 @@ function Qiwi(token) {
      * @param {function(err,data)} callback 
      */
     this.toMobilePhone = function (requestOptions, callback) {
-        detectOperator('7' + requestOptions.account, (err, data) => {
+        this.detectOperator('7' + requestOptions.account, (err, data) => {
             if (err || data.code.value == "2") {
                 throw new Error('Can\'t detect operator.');
             }
@@ -183,7 +189,7 @@ function Qiwi(token) {
                     json: true
                 };
 
-                request.post(options, (error, response, body) => {
+                this.rq.post(options, (error, response, body) => {
                     if (typeof body.code != 'undefined') error = body;
                     callback(error, body);
                 });
@@ -224,7 +230,7 @@ function Qiwi(token) {
                     json: true
                 };
 
-                request.post(options, (error, response, body) => {
+                this.rq.post(options, (error, response, body) => {
                     callback(error, body);
                 });
             }
@@ -262,7 +268,7 @@ function Qiwi(token) {
             json: true
         };
 
-        request.post(options, (error, response, body) => {
+        this.rq.post(options, (error, response, body) => {
             callback(error, body);
         });
     }
@@ -278,7 +284,7 @@ function Qiwi(token) {
             json: true
         };
 
-        request.get(options, (error, response, body) => {
+        this.rq.get(options, (error, response, body) => {
             callback(error, body);
         });
     }
@@ -293,7 +299,7 @@ function Qiwi(token) {
             json: true
         };
 
-        request.post(options, (error, response, body) => {
+        this.rq.post(options, (error, response, body) => {
             callback(error, body);
         });
     }
@@ -308,7 +314,7 @@ function Qiwi(token) {
             json: true
         };
 
-        request.post(options, (error, response, body) => {
+        this.rq.post(options, (error, response, body) => {
             callback(error, body);
         });
     }
@@ -330,7 +336,7 @@ function Qiwi(token) {
             json: true
         };
 
-        request.put(options, (error, response, body) => {
+        this.rq.put(options, (error, response, body) => {
             callback(error, body);
         });
     }
@@ -347,7 +353,7 @@ function Qiwi(token) {
             json: true
         };
 
-        request.delete(options, (error, response, body) => {
+        this.rq.delete(options, (error, response, body) => {
             callback(error, body);
         });
     }
@@ -364,7 +370,7 @@ function Qiwi(token) {
             json: true
         };
 
-        request.get(options, (error, response, body) => {
+        this.rq.get(options, (error, response, body) => {
             callback(error, body);
         });
     }
@@ -381,7 +387,7 @@ function Qiwi(token) {
             json: true
         };
 
-        request.post(options, (error, response, body) => {
+        this.rq.post(options, (error, response, body) => {
             callback(error, body);
         });
     }
@@ -397,7 +403,7 @@ function Qiwi(token) {
             json: true
         };
 
-        request.get(options, (error, response, body) => {
+        this.rq.get(options, (error, response, body) => {
             callback(error, body);
         });
     }
@@ -413,7 +419,7 @@ function Qiwi(token) {
             json: true
         };
 
-        request.get(options, (error, response, body) => {
+        this.rq.get(options, (error, response, body) => {
             callback(error, body);
         });
     }
